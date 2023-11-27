@@ -1,8 +1,6 @@
 # Import Flask library
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, request, jsonify
 from langchain.llms import OpenAI
-
-from prompt_template import question_template
 from langchain.prompts import PromptTemplate
 
 # Size of the answer, in number of words
@@ -33,7 +31,7 @@ Answer:
 app = Flask(__name__)
 
 # Define a method to handle GET requests at the root path
-@app.route("/", methods=["GET"])
+@app.route("/ask", methods=["GET"])
 def ask():
     data = request.get_json()
 
@@ -43,9 +41,11 @@ def ask():
     temp = data.get("temp", 0.9)
     language = data.get("language", "Brazilian Portuguese")
 
-    llm = OpenAI(temperature = temp, max_tokens=int(answer_size[size]*2))
-    question = question_template.format(question=question, age=age, size=answer_size[size])
-    return jsonify({"result": llm(question)})
+    # llm = OpenAI(temperature = temp, max_tokens=int(answer_size[size]*2))
+    llm = OpenAI(temperature = temp)
+    question = question_template.format(question=question, age=age, size=answer_size[size], language=language)
+    
+    return llm(question)
 
 # # Define a method to handle POST requests at the /add path
 # @app.route("/add", methods=["POST"])
@@ -72,6 +72,6 @@ def ask():
 #     # Return the reversed string as a JSON object
 #     return jsonify({"reversed_string": reversed_string})
 
-# Run the app on port 5000
+# Run the app on port 3000
 if __name__ == "__main__":
-    app.run(port=5000)
+    app.run(port=3000)

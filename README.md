@@ -16,6 +16,7 @@ This example uses the Web Server Gateway Interface (WSGI) with Flask to enable h
 
 ```bash
 npm i -g vercel
+pip3 install -r requirements.txt
 vercel dev
 ```
 
