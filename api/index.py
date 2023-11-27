@@ -1,11 +1,8 @@
 # Import Flask library
-from flask import Flask, request, jsonify
+from flask import Flask, request
 from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
-import openai
-import os
-
-openai.api_key = os.getenv("OPENAI_API_KEY")
+import json
 
 # Size of the answer, in number of words
 answer_size = {"small": "150", "medium": "300", "large": "600"}
@@ -27,6 +24,8 @@ Now you have to talk about the following subject:
 
 {question}
 
+Take a deep breath, and give an answer in a step-by-step way.
+
 Answer:
 """
 )
@@ -37,7 +36,7 @@ app = Flask(__name__)
 # Define a method to handle GET requests at the root path
 @app.route("/ask", methods=["GET"])
 def ask():
-    data = request.get_json()
+    data = json.loads(request.get_data())
 
     question = data["question"]
     age = data.get("age", 5)
