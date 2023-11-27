@@ -2,6 +2,10 @@
 from flask import Flask, request, jsonify
 from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
+import openai
+import os
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Size of the answer, in number of words
 answer_size = {"small": "150", "medium": "300", "large": "600"}
@@ -44,7 +48,7 @@ def ask():
     # llm = OpenAI(temperature = temp, max_tokens=int(answer_size[size]*2))
     llm = OpenAI(temperature = temp)
     question = question_template.format(question=question, age=age, size=answer_size[size], language=language)
-    
+
     return llm(question)
 
 # # Define a method to handle POST requests at the /add path
