@@ -34,7 +34,7 @@ Answer:
 app = Flask(__name__)
 
 # Define a method to handle GET requests at the root path
-@app.route("/ask", methods=["GET"])
+@app.route("/ask", methods=["POST"])
 def ask():
     data = json.loads(request.get_data())
 
